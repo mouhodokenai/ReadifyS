@@ -24,14 +24,15 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val tabList = listOf(
         TabItem("Home", Icons.Outlined.Home, Icons.Filled.Home),
         TabItem("Search", Icons.Outlined.Search, Icons.Filled.Search),
-        TabItem("Account", Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle)
+        TabItem("Journal", Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle)
     )
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState {

@@ -15,6 +15,18 @@ data class User(
     val id: Int,
     val name : String,
     val email : String,
-    var password : String,
-    var favoriteBook: Int
+    var password : String
+)
+
+data class Favorites(
+    val userId : Int,
+    val bookArticle : Int
+)
+
+data class Loans(
+    val id: Int,
+    val userId: Int,
+    val bookId : Int,
+    val loanDate : String,
+    val returnDate : String
 )

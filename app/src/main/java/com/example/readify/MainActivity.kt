@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.readify.ui.theme.ReadifyTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,20 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = "home"){
+                        composable("home"){
+                            HomeScreen(navController)
+                        }
+                        composable("bookInfo/{article}",
+                            //arguments = listOf(navArgument("article") { type = NavType.IntType })
+                        ){//backStackEntry ->
+                            //val argumentValue = backStackEntry.arguments?.getInt("article") ?: 1
+                            BookInfo(
+                                //argumentValue
+                            )
+                        }
+                    }
                 }
             }
         }
