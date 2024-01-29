@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.readify"
-        minSdk 27
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -65,4 +65,8 @@ dependencies {
 
     //navigation
     implementation 'androidx.navigation:navigation-compose:2.7.6'
+    //ktor
+    implementation 'io.ktor:ktor-network:2.3.6'
+    //json
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
