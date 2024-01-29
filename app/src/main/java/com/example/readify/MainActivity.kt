@@ -25,8 +25,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "home"){
                         composable("home"){
-                            //HomeScreen(navController)
-                            Register()
+                            HomeScreen(navController)
                         }
                         composable("bookInfo/{article}",
                             //arguments = listOf(navArgument("article") { type = NavType.IntType })
