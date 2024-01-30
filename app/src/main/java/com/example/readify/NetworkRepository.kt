@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class Network(private val network: Client) {
+class NetworkRepository(private val network: Client) {
     suspend fun login(login: String, password: String){
         return withContext(Dispatchers.IO){
             val request = Request("login", mapOf())

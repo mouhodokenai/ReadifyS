@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+
 android {
     namespace 'com.example.readify'
     compileSdk 34
@@ -69,4 +70,6 @@ dependencies {
     implementation 'io.ktor:ktor-network:2.3.6'
     //json
     implementation 'com.google.code.gson:gson:2.10.1'
+
+
 }
