@@ -48,7 +48,7 @@ fun HomeScreen(navController: NavController) {
     }
 
     Scaffold(
-        topBar = {
+        bottomBar = {
             TabRow(selectedTabIndex = selectedTabIndex) {
                 tabList.forEachIndexed { index, item ->
                     Tab(

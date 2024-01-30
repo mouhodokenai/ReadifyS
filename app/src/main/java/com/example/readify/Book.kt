@@ -1,7 +1,7 @@
 package com.example.readify
 
 data class Book (
-    val article : Int, /*1 user: M book*/
+    val article : Int,
     val realiseDate: String,
     val title: String,
     val publication : String,

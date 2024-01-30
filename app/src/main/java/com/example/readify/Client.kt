@@ -18,7 +18,7 @@ class Client() {
             )
         )
             .tcp()
-            .connect(io.ktor.network.sockets.InetSocketAddress("192.168.0.103", 8006))
+            .connect(io.ktor.network.sockets.InetSocketAddress("192.168.108.1", 8008))
     }
 
     suspend fun sendRequest(text: String): Answer? {

@@ -1,6 +1,5 @@
 package com.example.readify
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -110,14 +109,13 @@ fun Register() {
             icon = { Icon(Icons.Filled.Person, contentDescription = "Register") },
             text = { Text("Register") },
             onClick = {
+                /*TODO*/
+                //Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show()
                 val viewModel = RegisterVm(NetworkRepository(Client()))
                 viewModel.register(name = username,
                     email = email,
                     password = password
                 )
-                /*TODO*/
-                Log.d("Вывод", username + email + password)
-                //Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show()
             }
         )
         Spacer(modifier = Modifier.fillMaxHeight(0.2f))
