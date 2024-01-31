@@ -27,12 +27,13 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.readify.Client
 import com.example.readify.NetworkRepository
 import com.example.readify.RegisterVm
 
 @Composable
-fun Register() {
+fun Register(navController: NavController) {
     var username by remember {
         mutableStateOf("")
     }
@@ -107,18 +108,16 @@ fun Register() {
                 /*TODO*/
                 //Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show()
                 val viewModel = RegisterVm(NetworkRepository(Client()))
-                viewModel.register(name = username,
+                viewModel.register(
+                    name = username,
                     email = email,
                     password = password
                 )
+
+                navController.popBackStack()
+                navController.navigate("login")
             }
         )
         Spacer(modifier = Modifier.fillMaxHeight(0.2f))
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewRegistration(){
-    Register()
 }

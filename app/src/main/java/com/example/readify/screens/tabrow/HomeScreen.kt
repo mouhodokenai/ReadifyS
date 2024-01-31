@@ -82,7 +82,7 @@ fun HomeScreen(navController: NavController) {
             when (page) {
                 0 -> BookList(navController)
                 1 -> Search(navController)
-                2 -> Journal()
+                2 -> Journal(navController)
                 else -> BookList(navController)
             }
         }

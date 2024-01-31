@@ -27,13 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.readify.SharedPreferences
 import java.math.BigInteger
 import java.security.MessageDigest
 
 @Composable
-fun Auth() {
+fun Auth(navController: NavController) {
     var username by remember {
         mutableStateOf("")
     }
@@ -89,13 +90,17 @@ fun Auth() {
                 text = { Text("Log in") },
                 onClick = {
                     /*TODO*/
+                    SharedPreferences.setUserId(1)
+                    navController.popBackStack()
+                    navController.navigate("home")
                 }
             )
             ExtendedFloatingActionButton(
                 icon = { Icon(Icons.Filled.Person, contentDescription = "Register") },
                 text = { Text("Register") },
                 onClick = {
-                    /*TODO*/
+                    navController.popBackStack()
+                    navController.navigate("sign up")
                 }
             )
         }
@@ -107,10 +112,4 @@ fun Auth() {
 fun hash(input: String): String {
     val md = MessageDigest.getInstance("MD5")
     return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewAuth(){
-    Auth()
 }

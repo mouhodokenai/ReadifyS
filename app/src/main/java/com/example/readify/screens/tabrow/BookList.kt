@@ -62,13 +62,13 @@ fun BookList(navController: NavController) {
     )
     LazyColumn {
         items(books) { book ->
-            BookItem(book)
+            BookItem(book, navController)
         }
     }
 }
 
 @Composable
-fun BookItem(book: Book) {
+fun BookItem(book: Book, navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,7 +76,7 @@ fun BookItem(book: Book) {
             .padding(16.dp)
             .border(1.dp, MaterialTheme.colorScheme.secondary, shape = RoundedCornerShape(8.dp))
             .clickable {
-                /*TODO NAVIGATION*/
+                navController.navigate("bookInfo")
             }
     ) {
         Row(

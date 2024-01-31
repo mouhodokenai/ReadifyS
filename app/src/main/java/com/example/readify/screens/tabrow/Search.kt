@@ -107,7 +107,7 @@ fun Search(navController: NavController) {
                     .contains(searchQuery.lowercase())) || it.genre == selectedGenre
             }
             ) { book ->
-                BookItem(book)
+                BookItem(book, navController)
             }
         }
     }

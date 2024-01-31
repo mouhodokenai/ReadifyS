@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.readify.screens.Auth
 import com.example.readify.screens.BookInfo
 import com.example.readify.screens.Register
 import com.example.readify.screens.tabrow.HomeScreen
@@ -18,6 +19,7 @@ import com.example.readify.ui.theme.ReadifyTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SharedPreferences.init(this)
         setContent {
             ReadifyTheme {
                 Surface(
@@ -29,7 +31,14 @@ class MainActivity : ComponentActivity() {
                         composable("home"){
                             HomeScreen(navController)
                         }
-                        composable("bookInfo/{article}",
+                        composable("login"){
+                            Auth(navController)
+                        }
+                        composable("sign up"){
+                            Register(navController)
+                        }
+                        composable("bookInfo"
+                            //"bookInfo/{article}",
                             //arguments = listOf(navArgument("article") { type = NavType.IntType })
                         ){//backStackEntry ->
                             //val argumentValue = backStackEntry.arguments?.getInt("article") ?: 1
