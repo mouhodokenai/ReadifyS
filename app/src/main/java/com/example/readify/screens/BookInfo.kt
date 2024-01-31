@@ -104,7 +104,8 @@ fun BookInfo(
                 InfoText("Издание", book.publication)
                 InfoText("Дата выпуска", book.realiseDate)
                 InfoText("Артикул", book.article.toString())
-                InfoText("Краткое описание", book.description) /*TODO REFACTOR DESCRIPTION*/
+                Text(text = "Краткое описание: ", color = MaterialTheme.colorScheme.secondary, fontSize = 20.sp)
+                Text(text = book.description, fontSize = 20.sp)
             }
         }
     }

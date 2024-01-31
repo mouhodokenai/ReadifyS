@@ -1,15 +1,19 @@
 package com.example.readify.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,35 +27,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.readify.Client
-import com.example.readify.NetworkRepository
-import com.example.readify.RegisterVm
+import java.math.BigInteger
+import java.security.MessageDigest
 
 @Composable
-fun Register() {
+fun Auth() {
     var username by remember {
-        mutableStateOf("")
-    }
-    var email by remember {
         mutableStateOf("")
     }
     var password by remember {
         mutableStateOf("")
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-
+        verticalArrangement = Arrangement.SpaceAround
     ) {
-        Spacer(modifier = Modifier.fillMaxHeight(0.1f))
-        Text(text = "Registration", fontSize = 28.sp, fontStyle = FontStyle.Italic)
-        Spacer(modifier = Modifier.fillMaxHeight(0.1f))
+        Image(imageVector = Icons.Outlined.AccountCircle, contentDescription = null)
         TextField(
             value = username,
             onValueChange = { username = it },
@@ -68,21 +64,6 @@ fun Register() {
                 .clip(RoundedCornerShape(10.dp))
         )
 
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("E-Mail") },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Lock,
-                    contentDescription = null,
-                    tint = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .clip(RoundedCornerShape(10.dp))
-        )
 
         TextField(
             value = password,
@@ -99,26 +80,37 @@ fun Register() {
                 .fillMaxWidth(0.9f)
                 .clip(RoundedCornerShape(10.dp))
         )
-
-        ExtendedFloatingActionButton(
-            icon = { Icon(Icons.Filled.Person, contentDescription = "Register") },
-            text = { Text("Register") },
-            onClick = {
-                /*TODO*/
-                //Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show()
-                val viewModel = RegisterVm(NetworkRepository(Client()))
-                viewModel.register(name = username,
-                    email = email,
-                    password = password
-                )
-            }
-        )
-        Spacer(modifier = Modifier.fillMaxHeight(0.2f))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            ExtendedFloatingActionButton(
+                icon = { Icon(Icons.Filled.Check, contentDescription = "Log in") },
+                text = { Text("Log in") },
+                onClick = {
+                    /*TODO*/
+                }
+            )
+            ExtendedFloatingActionButton(
+                icon = { Icon(Icons.Filled.Person, contentDescription = "Register") },
+                text = { Text("Register") },
+                onClick = {
+                    /*TODO*/
+                }
+            )
+        }
+        Spacer(modifier = Modifier.fillMaxHeight(0.1f))
     }
+}
+
+
+fun hash(input: String): String {
+    val md = MessageDigest.getInstance("MD5")
+    return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewRegistration(){
-    Register()
+fun PreviewAuth(){
+    Auth()
 }

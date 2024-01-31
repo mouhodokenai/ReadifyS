@@ -80,10 +80,10 @@ fun HomeScreen(navController: NavController) {
                 .padding(innerPadding)
         ) { page ->
             when (page) {
-                0 -> BookList()
-                1 -> Search()
-                2 -> Account()
-                else -> BookList()
+                0 -> BookList(navController)
+                1 -> Search(navController)
+                2 -> Journal()
+                else -> BookList(navController)
             }
         }
     }

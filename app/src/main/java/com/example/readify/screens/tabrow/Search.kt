@@ -27,10 +27,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.readify.Book
 
 @Composable
-fun Search() {
+fun Search(navController: NavController) {
     var searchQuery by remember { mutableStateOf("") }
     val bookList = remember { getMockBookList() }
     var expanded by remember { mutableStateOf(false) }

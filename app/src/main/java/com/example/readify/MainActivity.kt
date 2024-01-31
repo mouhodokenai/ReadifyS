@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.readify.screens.BookInfo
 import com.example.readify.screens.Register
+import com.example.readify.screens.tabrow.HomeScreen
 import com.example.readify.ui.theme.ReadifyTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,8 +27,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "home"){
                         composable("home"){
-                            //HomeScreen(navController)
-                            Register()
+                            HomeScreen(navController)
                         }
                         composable("bookInfo/{article}",
                             //arguments = listOf(navArgument("article") { type = NavType.IntType })
