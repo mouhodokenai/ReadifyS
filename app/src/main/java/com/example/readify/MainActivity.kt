@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.readify.screens.BookInfo
+import com.example.readify.screens.Register
 import com.example.readify.ui.theme.ReadifyTheme
 
 class MainActivity : ComponentActivity() {

@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +28,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.readify.Client
+import com.example.readify.NetworkRepository
+import com.example.readify.RegisterVm
 
 @Composable
 fun Register() {

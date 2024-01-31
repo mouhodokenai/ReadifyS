@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.screens.tabrow
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.readify.screens.TabItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

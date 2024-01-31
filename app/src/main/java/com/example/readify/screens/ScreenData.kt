@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.screens
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

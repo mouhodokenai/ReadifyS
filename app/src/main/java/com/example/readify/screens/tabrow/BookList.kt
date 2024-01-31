@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.screens.tabrow
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +31,8 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.readify.Book
+import com.example.readify.R
 
 @Composable
 fun BookList() {
