@@ -12,4 +12,9 @@ class RegisterVm(private val repository: NetworkRepository): ViewModel() {
             repository.register(name, email, password)
         }
     }
+    fun login(email: String, password: String){
+        viewModelScope.launch {
+            repository.login(email, password)
+        }
+    }
 }

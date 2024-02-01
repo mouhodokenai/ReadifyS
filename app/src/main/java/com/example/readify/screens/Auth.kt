@@ -29,13 +29,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.readify.Client
+import com.example.readify.NetworkRepository
+import com.example.readify.RegisterVm
 import com.example.readify.SharedPreferences
 import java.math.BigInteger
 import java.security.MessageDigest
 
 @Composable
 fun Auth(navController: NavController) {
-    var username by remember {
+    var email by remember {
         mutableStateOf("")
     }
     var password by remember {
@@ -50,9 +53,9 @@ fun Auth(navController: NavController) {
     ) {
         Image(imageVector = Icons.Outlined.AccountCircle, contentDescription = null)
         TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Person,
@@ -90,6 +93,11 @@ fun Auth(navController: NavController) {
                 text = { Text("Log in") },
                 onClick = {
                     /*TODO*/
+                    val viewModel = RegisterVm(NetworkRepository(Client()))
+                    viewModel.login(
+                        email = email,
+                        password = password
+                    )
                     SharedPreferences.setUserId(1)
                     navController.popBackStack()
                     navController.navigate("home")

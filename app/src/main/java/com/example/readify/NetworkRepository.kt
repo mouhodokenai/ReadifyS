@@ -6,9 +6,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class NetworkRepository(private val network: Client) {
-    suspend fun login(login: String, password: String){
+    suspend fun login(email: String, password: String): Boolean{
         return withContext(Dispatchers.IO){
-            val request = Request("login", mapOf())
+            val request = Request("LoginRequest", mapOf(
+                "email" to email,
+                "password" to password
+            ))
+
+            val jsonRequest = Gson().toJson(request)
+            Log.d("RequestLogging", "JSON Request: $jsonRequest")
+            val serverAnswer = network.sendRequest(jsonRequest)
+            val result = serverAnswer?.mapAttributes?.get("answer")
+            return@withContext result == "1"
         }
     }
 
