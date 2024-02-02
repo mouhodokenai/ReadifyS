@@ -1,33 +1,69 @@
 package com.example.readify.screens.tabrow
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.readify.Loans
+import androidx.navigation.compose.rememberNavController
 import com.example.readify.SharedPreferences
 import java.time.LocalTime
 
 @Composable
 fun Journal(navController: NavController) {
-
-    Box(modifier = Modifier.fillMaxSize(),
+    Box(
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
-        if (SharedPreferences.containsKey()){
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-                contentAlignment = Alignment.Center){
-                Text(text = getGreeting() + "user", fontSize = 15.sp) /*TODO*/
+    ) {
+        if (SharedPreferences.containsKey()) {
+            Column(
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.secondary, shape = RoundedCornerShape(8.dp)),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        Text(text = getGreeting() + "user", fontSize = 15.sp) /*TODO*/
+                        Text(text = "Количество взятых книг: n") /*TODO*/
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Outlined.Info, contentDescription = null)
+                    }
+                }
+                /*TODO FAVORITES*/
+                LazyColumn {
+                    items(getMockBookList()) { book ->
+                        BookItem(book, navController)
+                    }
+                }
             }
         } else {
             Button(onClick = {
@@ -38,35 +74,14 @@ fun Journal(navController: NavController) {
             }
         }
     }
-
-
-    /*
-    val books = listOf(
-        Loans(1, 1, 1, "01/01/2024", "15/01/2024"),
-        Loans(2, 1, 1, "02/01/2024", "16/01/2024"),
-        Loans(3, 1, 1, "03/01/2024", "17/01/2024")
-    )
-    Column{
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
-            contentAlignment = Alignment.Center){
-            Text(text = getGreeting() + "user", fontSize = 15.sp) /*TODO*/
-        }
-        /*TODO LOANS*/
-        LazyColumn {
-            items(books) { book ->
-                LoanItem(book)
-            }
-        }
-    }
-
-     */
 }
 
-@Composable
-fun LoanItem(book: Loans) {
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewJournal() {
+    val navController = rememberNavController()
+    Journal(navController)
 }
 
 fun getGreeting(): String {

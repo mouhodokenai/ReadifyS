@@ -33,8 +33,6 @@ import com.example.readify.Client
 import com.example.readify.NetworkRepository
 import com.example.readify.RegisterVm
 import com.example.readify.SharedPreferences
-import java.math.BigInteger
-import java.security.MessageDigest
 
 @Composable
 fun Auth(navController: NavController) {
@@ -114,10 +112,4 @@ fun Auth(navController: NavController) {
         }
         Spacer(modifier = Modifier.fillMaxHeight(0.1f))
     }
-}
-
-
-fun hash(input: String): String {
-    val md = MessageDigest.getInstance("MD5")
-    return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
 }
