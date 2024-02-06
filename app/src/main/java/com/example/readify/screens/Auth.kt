@@ -96,7 +96,7 @@ fun Auth(navController: NavController) {
                         email = email,
                         password = password
                     )
-                    SharedPreferences.setUserId(1)
+                    SharedPreferences.setUserId(1) /*TODO*/
                     navController.popBackStack()
                     navController.navigate("home")
                 }

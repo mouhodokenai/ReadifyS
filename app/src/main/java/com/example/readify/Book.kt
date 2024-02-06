@@ -1,15 +1,19 @@
 package com.example.readify
 
-data class Book (
-    val article : Int,
+import kotlinx.serialization.*
+
+@Serializable
+data class Book(
+    val article: Int,
     val realiseDate: String,
     val title: String,
-    val publication : String,
+    val publication: String,
     val author: String,
     val genre: String,
     val isAvailable: Boolean,
-    val description : String
+    val description: String
 )
+
 
 data class User(
     val id: Int,
@@ -30,3 +34,4 @@ data class Loans(
     val loanDate : String,
     val returnDate : String
 )
+

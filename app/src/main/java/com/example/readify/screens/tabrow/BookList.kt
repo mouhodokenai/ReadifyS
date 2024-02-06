@@ -23,6 +23,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionContext
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -34,38 +39,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.readify.Book
+import com.example.readify.BooksListWrapper
+import com.example.readify.Client
+import com.example.readify.MainActivity
+import com.example.readify.NetworkRepository
 import com.example.readify.R
+import com.example.readify.RegisterVm
 
 @Composable
-fun BookList(navController: NavController) {
-    val books = listOf(
-        Book(
-            123456,
-            "01-01-2024",
-            "Книга 1",
-            "ООО Закрытые вопросы",
-            "Автор 1",
-            "Жанр 1",
-            true,
-            "Автобиография небезиствестного Автора 1, что прославился своими бестселлерами, такими как Книга 2 и Книга 3"
-        ),
-        Book(
-            789456,
-            "01-01-2024",
-            "Книга 2",
-            "ООО Закрытые вопросы",
-            "Автор 1",
-            "Жанр 1",
-            false,
-            "Увлекательное произведение Автора 1, которое необходимо прочитать каждой целеустремленной личности"
-        )
-    )
+fun BookList(navController: NavController, context: MainActivity) {
+    val viewModel = RegisterVm(NetworkRepository(Client()))
+
+    var books by remember {
+        mutableStateOf(emptyList<Book>())
+    }
+    viewModel.books.observe(context){
+        books = it
+    }
+    viewModel.show()
     LazyColumn {
         items(books) { book ->
             BookItem(book, navController)
         }
     }
 }
+
+
 
 @Composable
 fun BookItem(book: Book, navController: NavController) {

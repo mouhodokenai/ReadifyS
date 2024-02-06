@@ -113,7 +113,6 @@ fun Register(navController: NavController) {
                     email = email,
                     password = password
                 )
-
                 navController.popBackStack()
                 navController.navigate("login")
             }

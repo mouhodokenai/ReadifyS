@@ -25,11 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.readify.MainActivity
 import com.example.readify.screens.TabItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, context: MainActivity) {
     val tabList = listOf(
         TabItem("Home", Icons.Outlined.Home, Icons.Filled.Home),
         TabItem("Search", Icons.Outlined.Search, Icons.Filled.Search),
@@ -80,10 +81,10 @@ fun HomeScreen(navController: NavController) {
                 .padding(innerPadding)
         ) { page ->
             when (page) {
-                0 -> BookList(navController)
+                0 -> BookList(navController, context)
                 1 -> Search(navController)
                 2 -> Journal(navController)
-                else -> BookList(navController)
+                else -> BookList(navController, context)
             }
         }
     }
