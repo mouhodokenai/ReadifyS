@@ -32,9 +32,9 @@ import com.example.readify.screens.TabItem
 @Composable
 fun HomeScreen(navController: NavController, context: MainActivity) {
     val tabList = listOf(
-        TabItem("Home", Icons.Outlined.Home, Icons.Filled.Home),
-        TabItem("Search", Icons.Outlined.Search, Icons.Filled.Search),
-        TabItem("Journal", Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle)
+        TabItem("Меню", Icons.Outlined.Home, Icons.Filled.Home),
+        TabItem("Поиск", Icons.Outlined.Search, Icons.Filled.Search),
+        TabItem("Журнал", Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle)
     )
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState {
@@ -82,8 +82,8 @@ fun HomeScreen(navController: NavController, context: MainActivity) {
         ) { page ->
             when (page) {
                 0 -> BookList(navController, context)
-                1 -> Search(navController)
-                2 -> Journal(navController)
+                1 -> Search(navController, context)
+                2 -> Journal(navController, context)
                 else -> BookList(navController, context)
             }
         }

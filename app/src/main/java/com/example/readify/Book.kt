@@ -14,6 +14,8 @@ data class Book(
     val description: String
 )
 
+@Serializable
+data class BooksListWrapper(val books: List<Book>)
 
 data class User(
     val id: Int,
