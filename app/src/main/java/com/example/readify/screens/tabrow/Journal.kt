@@ -19,6 +19,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,11 +30,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.readify.Book
+import com.example.readify.Client
+import com.example.readify.MainActivity
+import com.example.readify.NetworkRepository
+import com.example.readify.RegisterVm
 import com.example.readify.SharedPreferences
 import java.time.LocalTime
 
 @Composable
-fun Journal(navController: NavController) {
+fun Journal(navController: NavController, context: MainActivity) {
+
+    val viewModel = RegisterVm(NetworkRepository(Client()))
+
+    var books by remember {
+        mutableStateOf(emptyList<Book>())
+    }
+    viewModel.books.observe(context){
+        books = it
+    }
+    viewModel.show()
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -54,13 +74,15 @@ fun Journal(navController: NavController) {
                         Text(text = getGreeting() + "user", fontSize = 15.sp) /*TODO*/
                         Text(text = "Количество взятых книг: n") /*TODO*/
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        navController.navigate("account")
+                    }) {
                         Icon(imageVector = Icons.Outlined.Info, contentDescription = null)
                     }
                 }
                 /*TODO FAVORITES*/
                 LazyColumn {
-                    items(getMockBookList()) { book ->
+                    items(books) { book ->
                         BookItem(book, navController)
                     }
                 }
@@ -70,18 +92,10 @@ fun Journal(navController: NavController) {
                 navController.popBackStack()
                 navController.navigate("login")
             }) {
-                Text(text = "Log in")
+                Text(text = "Вход")
             }
         }
     }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewJournal() {
-    val navController = rememberNavController()
-    Journal(navController)
 }
 
 fun getGreeting(): String {

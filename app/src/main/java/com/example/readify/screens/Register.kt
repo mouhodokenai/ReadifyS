@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -51,12 +50,12 @@ fun Register(navController: NavController) {
 
     ) {
         Spacer(modifier = Modifier.fillMaxHeight(0.1f))
-        Text(text = "Registration", fontSize = 28.sp, fontStyle = FontStyle.Italic)
+        Text(text = "Регистрация", fontSize = 28.sp, fontStyle = FontStyle.Italic)
         Spacer(modifier = Modifier.fillMaxHeight(0.1f))
         TextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Username") },
+            label = { Text("Имя пользователя") },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Person,
@@ -64,6 +63,7 @@ fun Register(navController: NavController) {
                     tint = Color.Gray
                 )
             },
+            singleLine = true,
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .clip(RoundedCornerShape(10.dp))
@@ -72,7 +72,7 @@ fun Register(navController: NavController) {
         TextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("E-Mail") },
+            label = { Text("Эл. почта") },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
@@ -80,6 +80,7 @@ fun Register(navController: NavController) {
                     tint = Color.Gray
                 )
             },
+            singleLine = true,
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .clip(RoundedCornerShape(10.dp))
@@ -88,7 +89,7 @@ fun Register(navController: NavController) {
         TextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text("Пароль") },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
@@ -96,6 +97,7 @@ fun Register(navController: NavController) {
                     tint = Color.Gray
                 )
             },
+            singleLine = true,
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .clip(RoundedCornerShape(10.dp))
@@ -103,7 +105,7 @@ fun Register(navController: NavController) {
 
         ExtendedFloatingActionButton(
             icon = { Icon(Icons.Filled.Person, contentDescription = "Register") },
-            text = { Text("Register") },
+            text = { Text("Зарегистрироваться") },
             onClick = {
                 /*TODO*/
                 //Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show()

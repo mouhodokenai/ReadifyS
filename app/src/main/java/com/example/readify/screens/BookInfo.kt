@@ -11,10 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -26,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.readify.Book
@@ -63,17 +61,6 @@ fun BookInfo(
                     }
                 )
             }
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                content = {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "add"
-                    )
-                },
-                onClick = { /*TODO LOAN + NAVIGATE*/ }
-            )
         }
     ) { innerPadding ->
         Column(
@@ -106,15 +93,20 @@ fun BookInfo(
                 InfoText("Артикул", book.article.toString())
                 Text(text = "Краткое описание: ", color = MaterialTheme.colorScheme.secondary, fontSize = 20.sp)
                 Text(text = book.description, fontSize = 20.sp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ){
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = "Забрать")
+                    }
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = "В избранное")
+                    }
+                }
             }
         }
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun PreviewBookInfo() {
-    BookInfo()
 }
 
 @Composable

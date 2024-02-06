@@ -29,27 +29,48 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.readify.Book
+import com.example.readify.Client
+import com.example.readify.MainActivity
+import com.example.readify.NetworkRepository
+import com.example.readify.RegisterVm
 
 @Composable
-fun Search(navController: NavController) {
+fun Search(navController: NavController, context: MainActivity) {
     var searchQuery by remember { mutableStateOf("") }
-    val bookList = remember { getMockBookList() }
     var expanded by remember { mutableStateOf(false) }
     var selectedGenre by remember { mutableStateOf("") }
-    /*val genres = listOf(
+
+
+    val viewModel = RegisterVm(NetworkRepository(Client()))
+
+    var bookList by remember {
+        mutableStateOf(emptyList<Book>())
+    }
+    viewModel.books.observe(context) {
+        bookList = it
+    }
+    viewModel.show()
+
+    val genres = listOf(
         "Драма",
-        "Комедия",
-        "Трагедия",
-        "Реалистическая проза",
+        "Фэнтези",
+        "Роман",
+        "Сказка",
+        "Драма",
         "Детектив",
-        "Приключенческая литература",
-        "Любовный роман",
-        "Исторический роман",
-        "Фантастика и фэнтези",
-        "Сказки",
-        "Научная литература"
-    ) */
-    val genres = listOf("Fiction", "Dystopian", "Romance")
+        "Ужасы",
+        "Наука",
+        "Рассказ",
+        "Эротика",
+        "Манга",
+        "Пособие",
+        "Комедия",
+        "Философия",
+        "Антиутопия",
+        "Фантастика",
+        "Приключения",
+        "Реализм"
+    )
 
     Column(
         modifier = Modifier
@@ -111,49 +132,4 @@ fun Search(navController: NavController) {
             }
         }
     }
-}
-
-fun getMockBookList(): List<Book> {
-    return listOf(
-        Book(
-            1,
-            "2022-01-01",
-            "The Great Gatsby",
-            "Publisher A",
-            "F. Scott Fitzgerald",
-            "Fiction",
-            true,
-            "A classic novel"
-        ),
-        Book(
-            2,
-            "2022-02-15",
-            "To Kill a Mockingbird",
-            "Publisher B",
-            "Harper Lee",
-            "Fiction",
-            true,
-            "A powerful story of justice"
-        ),
-        Book(
-            3,
-            "2022-03-10",
-            "1984",
-            "Publisher C",
-            "George Orwell",
-            "Dystopian",
-            true,
-            "A dystopian classic"
-        ),
-        Book(
-            4,
-            "2022-04-25",
-            "Pride and Prejudice",
-            "Publisher D",
-            "Jane Austen",
-            "Romance",
-            true,
-            "A classic love story"
-        )
-    )
 }

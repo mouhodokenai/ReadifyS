@@ -53,7 +53,8 @@ fun Auth(navController: NavController) {
         TextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
+            label = { Text("Эл. почта") },
+            singleLine = true,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Person,
@@ -70,7 +71,7 @@ fun Auth(navController: NavController) {
         TextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text("Пароль") },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
@@ -78,6 +79,7 @@ fun Auth(navController: NavController) {
                     tint = Color.Gray
                 )
             },
+            singleLine = true,
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .clip(RoundedCornerShape(10.dp))
@@ -88,7 +90,7 @@ fun Auth(navController: NavController) {
         ) {
             ExtendedFloatingActionButton(
                 icon = { Icon(Icons.Filled.Check, contentDescription = "Log in") },
-                text = { Text("Log in") },
+                text = { Text("Войти") },
                 onClick = {
                     /*TODO*/
                     val viewModel = RegisterVm(NetworkRepository(Client()))
@@ -103,7 +105,7 @@ fun Auth(navController: NavController) {
             )
             ExtendedFloatingActionButton(
                 icon = { Icon(Icons.Filled.Person, contentDescription = "Register") },
-                text = { Text("Register") },
+                text = { Text("Зарегистрироваться") },
                 onClick = {
                     navController.popBackStack()
                     navController.navigate("sign up")
