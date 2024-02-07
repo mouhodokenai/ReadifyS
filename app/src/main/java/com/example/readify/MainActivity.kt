@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.readify.screens.Account
 import com.example.readify.screens.Auth
 import com.example.readify.screens.BookInfo
@@ -36,19 +38,18 @@ class MainActivity : ComponentActivity() {
                             Auth(navController)
                         }
                         composable("sign up"){
-                            Register(navController)
+                            Register(navController, this@MainActivity)
                         }
                         composable("account"){
                             Account(navController, this@MainActivity)
                         }
-                        composable("bookInfo"
-                            //"bookInfo/{article}",
-                            //arguments = listOf(navArgument("article") { type = NavType.IntType })
-                        ){//backStackEntry ->
-                            //val argumentValue = backStackEntry.arguments?.getInt("article") ?: 1
+                        composable("bookInfo/{article}",
+                            arguments = listOf(navArgument("article") { type = NavType.IntType })
+                        ){backStackEntry ->
+                            val argumentValue = backStackEntry.arguments?.getInt("article") ?: 1
                             BookInfo(
-                                this@MainActivity
-                                //argumentValue
+                                this@MainActivity,
+                                argumentValue
                             )
                         }
                     }

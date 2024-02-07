@@ -72,7 +72,7 @@ fun BookItem(book: Book, navController: NavController) {
             .padding(16.dp)
             .border(1.dp, MaterialTheme.colorScheme.secondary, shape = RoundedCornerShape(8.dp))
             .clickable {
-                navController.navigate("bookInfo")
+                navController.navigate("bookInfo/${book.article}")
             }
     ) {
         Row(

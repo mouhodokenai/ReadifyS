@@ -43,11 +43,8 @@ import com.example.readify.R
 import com.example.readify.RegisterVm
 import com.example.readify.User
 import com.example.readify.screens.tabrow.getGreeting
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Calendar
-import java.util.Locale
 
 @Composable
 fun Account(navController: NavController, context: MainActivity) {
@@ -85,7 +82,7 @@ fun Account(navController: NavController, context: MainActivity) {
 
 @Composable
 fun LoanItem(book : Loan) {
-    var color = if (compareDate(book.returnDate)) {
+    val color = if (compareDate(book.returnDate)) {
         Color.Black
     } else {
         Color.Gray
@@ -145,17 +142,4 @@ fun compareDate(date: String): Boolean {
         comparisonResult > 0 -> true
         else -> true
     }
-}
-
-fun addMonth(): String {
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    val currentDate = Calendar.getInstance()
-
-    currentDate.time = dateFormat.parse(getToday())!!
-
-    currentDate.add(Calendar.MONTH, 1)
-
-    val newDate = currentDate.time
-
-    return dateFormat.format(newDate)
 }

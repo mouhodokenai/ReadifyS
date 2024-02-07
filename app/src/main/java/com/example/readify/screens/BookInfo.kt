@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -38,25 +39,28 @@ import com.example.readify.SharedPreferences
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookInfo(
-    context : MainActivity
+    context: MainActivity,
+    argumentValue : Int
 ) {
-    var book = Book(
-        123456,
-        "01-01-2024",
-        "Книга 1",
-        "ООО Закрытые вопросы",
-        "Автор 1",
-        "Жанр 1",
-        true,
-        "Автобиография небезиствестного Автора 1, что прославился своими бестселлерами, такими как Книга 2 и Книга 3"
-    )
-
+    var book = remember {
+        Book(
+            1,
+            " ",
+            " ",
+            " ",
+            " ",
+            " ",
+            true,
+            " "
+        )
+    }
     val viewModel = RegisterVm(NetworkRepository(Client()))
 
     viewModel.selectedBook.observe(context) {
         book = it
     }
-    viewModel.showBooks()
+
+    viewModel.book(argumentValue.toString())
 
     Scaffold(
         topBar = {
@@ -111,7 +115,6 @@ fun BookInfo(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ){
                     Button(onClick = {
-                        val viewModel = RegisterVm(NetworkRepository(Client()))
                         viewModel.loan(
                             article = book.article,
                             id = SharedPreferences.getUserId(),

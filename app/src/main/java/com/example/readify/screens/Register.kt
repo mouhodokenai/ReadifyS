@@ -1,5 +1,6 @@
 package com.example.readify.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,11 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.readify.Client
+import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
 import com.example.readify.RegisterVm
 
 @Composable
-fun Register(navController: NavController) {
+fun Register(navController: NavController, context: MainActivity) {
     var username by remember {
         mutableStateOf("")
     }
@@ -42,6 +44,11 @@ fun Register(navController: NavController) {
     var password by remember {
         mutableStateOf("")
     }
+
+    var correct by remember {
+        mutableStateOf(false)
+    }
+    val regex = "^\\w+\\@\\w+\\.(ru|com)$".toRegex()
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -107,16 +114,18 @@ fun Register(navController: NavController) {
             icon = { Icon(Icons.Filled.Person, contentDescription = "Register") },
             text = { Text("Зарегистрироваться") },
             onClick = {
-                /*TODO*/
-                //Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show()
-                val viewModel = RegisterVm(NetworkRepository(Client()))
-                viewModel.register(
-                    name = username,
-                    email = email,
-                    password = password
-                )
-                navController.popBackStack()
-                navController.navigate("login")
+                if (regex.matches(email) && (password.length in 6..12)) {
+                    val viewModel = RegisterVm(NetworkRepository(Client()))
+                    viewModel.register(
+                        name = username,
+                        email = email,
+                        password = password
+                    )
+                    navController.popBackStack()
+                    navController.navigate("login")
+                } else {
+                    Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT).show()
+                }
             }
         )
         Spacer(modifier = Modifier.fillMaxHeight(0.2f))
