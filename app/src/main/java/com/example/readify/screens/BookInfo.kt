@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.readify.Book
 import com.example.readify.Client
+import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
 import com.example.readify.R
 import com.example.readify.RegisterVm
@@ -37,8 +38,9 @@ import com.example.readify.SharedPreferences
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookInfo(
+    context : MainActivity
 ) {
-    val book = Book(
+    var book = Book(
         123456,
         "01-01-2024",
         "Книга 1",
@@ -48,6 +50,13 @@ fun BookInfo(
         true,
         "Автобиография небезиствестного Автора 1, что прославился своими бестселлерами, такими как Книга 2 и Книга 3"
     )
+
+    val viewModel = RegisterVm(NetworkRepository(Client()))
+
+    viewModel.selectedBook.observe(context) {
+        book = it
+    }
+    viewModel.showBooks()
 
     Scaffold(
         topBar = {

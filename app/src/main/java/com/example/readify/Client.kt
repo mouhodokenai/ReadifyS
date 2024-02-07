@@ -81,7 +81,6 @@ class Client() {
             return emptyList<Loan>()
         }
     }
-
     suspend fun sendBookRequest(text: String): List<Book> {
         val socket = connect()
         socket.openWriteChannel(autoFlush = true).writeStringUtf8(text)
@@ -106,6 +105,31 @@ class Client() {
             e.printStackTrace()
             Log.e("AnswerLogging", "Error parsing JSON response: $answer")
             return emptyList<Book>()
+        }
+    }
+    suspend fun sendABookRequest(text: String): Book {
+        val socket = connect()
+        socket.openWriteChannel(autoFlush = true).writeStringUtf8(text)
+
+        // Логирование перед получением ответа
+        Log.d("RequestLogging", "Sent request: $text")
+
+        val reader = socket.openReadChannel()
+        val answer = reader.readUTF8Line().toString()
+
+        // Логирование после получения ответа
+        Log.d("AnswerLogging", "Raw Server Response: $answer")
+
+        try {
+            // Попытка десериализации ответа с использованием kotlinx.serialization
+            val book = Gson().fromJson(answer, Book::class.java)
+
+            return book
+        } catch (e: Exception) {
+            // Обработка ошибок десериализации и логирование
+            e.printStackTrace()
+            Log.e("AnswerLogging", "Error parsing JSON response: $answer")
+            return Book(0, "", "", "", "", "", true, "")
         }
     }
 }

@@ -12,6 +12,7 @@ class RegisterVm(private val repository: NetworkRepository) : ViewModel() {
     val success = MutableLiveData<Boolean>()
     val books = MutableLiveData<List<Book>>()
     val loans = MutableLiveData<List<Loan>>()
+    val selectedBook = MutableLiveData<Book>()
 
     fun register(name: String, email: String, password: String) {
         viewModelScope.launch {
@@ -40,6 +41,12 @@ class RegisterVm(private val repository: NetworkRepository) : ViewModel() {
     fun loan(article: Int, id: Int) {
         viewModelScope.launch {
             repository.takeABook(article, id)
+        }
+    }
+
+    fun book(article: String) {
+        viewModelScope.launch {
+            selectedBook.value = repository.returnABook(article)
         }
     }
 }

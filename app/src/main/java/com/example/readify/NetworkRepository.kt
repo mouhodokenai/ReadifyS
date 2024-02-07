@@ -79,4 +79,13 @@ class NetworkRepository(private val network: Client) {
             return@withContext result == "1"
         }
     }
+    suspend fun returnABook(article: String) : Book{
+        return withContext(Dispatchers.IO) {
+            val request = Request("ShowBook", mapOf("id" to article))
+
+            val jsonRequest = Gson().toJson(request)
+            Log.d("книжка", "JSON Request: $jsonRequest")
+            return@withContext network.sendABookRequest(jsonRequest)
+        }
+    }
 }

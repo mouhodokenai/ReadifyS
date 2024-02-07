@@ -47,6 +47,7 @@ class MainActivity : ComponentActivity() {
                         ){//backStackEntry ->
                             //val argumentValue = backStackEntry.arguments?.getInt("article") ?: 1
                             BookInfo(
+                                this@MainActivity
                                 //argumentValue
                             )
                         }
