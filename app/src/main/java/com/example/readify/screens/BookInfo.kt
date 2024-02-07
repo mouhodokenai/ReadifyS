@@ -28,7 +28,11 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.readify.Book
+import com.example.readify.Client
+import com.example.readify.NetworkRepository
 import com.example.readify.R
+import com.example.readify.RegisterVm
+import com.example.readify.SharedPreferences
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,7 +101,13 @@ fun BookInfo(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ){
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = {
+                        val viewModel = RegisterVm(NetworkRepository(Client()))
+                        viewModel.loan(
+                            article = book.article,
+                            id = SharedPreferences.getUserId(),
+                        )
+                    }) {
                         Text(text = "Забрать")
                     }
                     Button(onClick = { /*TODO*/ }) {

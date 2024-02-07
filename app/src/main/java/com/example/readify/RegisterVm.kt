@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 class RegisterVm(private val repository: NetworkRepository) : ViewModel() {
     val success = MutableLiveData<Boolean>()
     val books = MutableLiveData<List<Book>>()
+    val loans = MutableLiveData<List<Loan>>()
 
     fun register(name: String, email: String, password: String) {
         viewModelScope.launch {
@@ -24,10 +25,21 @@ class RegisterVm(private val repository: NetworkRepository) : ViewModel() {
         }
     }
 
-
-    fun show() {
+    fun showBooks() {
         viewModelScope.launch {
             books.value = repository.show()
+        }
+    }
+
+    fun showLoans() {
+        viewModelScope.launch {
+            loans.value = repository.showLoans()
+        }
+    }
+
+    fun loan(article: Int, id: Int) {
+        viewModelScope.launch {
+            repository.takeABook(article, id)
         }
     }
 }

@@ -42,6 +42,16 @@ class NetworkRepository(private val network: Client) {
         }
     }
 
+    suspend fun showLoans() : List<Loan>{ //
+        return withContext(Dispatchers.IO) {
+            val request = Request("ShowLoans", mapOf("name" to "name"))
+
+            val jsonRequest = Gson().toJson(request)
+            Log.d("книжка", "JSON Request: $jsonRequest")
+            return@withContext network.sendLoanRequest(jsonRequest)
+        }
+    }
+
     suspend fun show() : List<Book>{
         return withContext(Dispatchers.IO) {
             val request = Request("ShowBooks", mapOf("name" to "name"))
@@ -49,6 +59,24 @@ class NetworkRepository(private val network: Client) {
             val jsonRequest = Gson().toJson(request)
             Log.d("книжка", "JSON Request: $jsonRequest")
             return@withContext network.sendBookRequest(jsonRequest)
+        }
+    }
+
+    suspend fun takeABook(article: Int, id: Int): Boolean{
+        return withContext(Dispatchers.IO){
+            val request = RequestI("TakeABook", mapOf(
+                "article" to article,
+                "id" to id
+            )
+            )
+
+            val jsonRequest = Gson().toJson(request)
+            Log.d("RequestLogging", "JSON Request: $jsonRequest")
+            val serverAnswer = network.sendRequest(jsonRequest)
+            val result = serverAnswer?.mapAttributes?.get("answer")
+            Log.d("AnswerLogging", "Результат $serverAnswer")
+            println(result)
+            return@withContext result == "1"
         }
     }
 }

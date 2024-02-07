@@ -49,7 +49,7 @@ fun Journal(navController: NavController, context: MainActivity) {
     viewModel.books.observe(context){
         books = it
     }
-    viewModel.show()
+    viewModel.showBooks()
 
     Box(
         modifier = Modifier.fillMaxSize(),

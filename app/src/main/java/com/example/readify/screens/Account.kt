@@ -17,11 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,23 +32,22 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.readify.Book
 import com.example.readify.Client
-import com.example.readify.Loans
+import com.example.readify.Loan
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
 import com.example.readify.R
 import com.example.readify.RegisterVm
 import com.example.readify.User
-import com.example.readify.screens.tabrow.BookItem
 import com.example.readify.screens.tabrow.getGreeting
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
 
 @Composable
 fun Account(navController: NavController, context: MainActivity) {
@@ -69,16 +64,16 @@ fun Account(navController: NavController, context: MainActivity) {
         val viewModel = RegisterVm(NetworkRepository(Client()))
 
         var books by remember {
-            mutableStateOf(emptyList<Book>())
+            mutableStateOf(emptyList<Loan>())
         }
-        viewModel.books.observe(context){
+        viewModel.loans.observe(context){
             books = it
         }
-        viewModel.show()
+        viewModel.showLoans()
 
         LazyColumn {
             items(books) { book ->
-                BookItem(book, navController)
+                LoanItem(book)
             }
         }
 
@@ -89,7 +84,7 @@ fun Account(navController: NavController, context: MainActivity) {
 }
 
 @Composable
-fun LoanItem(book : Loans) {
+fun LoanItem(book : Loan) {
     var color = if (compareDate(book.returnDate)) {
         Color.Black
     } else {
@@ -124,7 +119,7 @@ fun LoanItem(book : Loans) {
                     .padding(horizontal = 16.dp)
             ) {
 
-                Text(text = book.bookId.toString(), fontWeight = FontWeight.Bold, fontSize = 18.sp, color = color)
+                Text(text = book.bookTitle, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = color)
                 Text(text = "Дата получения книги: ${book.loanDate}", color = color)
                 Text(text = "Дата возврата: ${book.returnDate}", color = color)
             }
@@ -150,4 +145,17 @@ fun compareDate(date: String): Boolean {
         comparisonResult > 0 -> true
         else -> true
     }
+}
+
+fun addMonth(): String {
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    val currentDate = Calendar.getInstance()
+
+    currentDate.time = dateFormat.parse(getToday())!!
+
+    currentDate.add(Calendar.MONTH, 1)
+
+    val newDate = currentDate.time
+
+    return dateFormat.format(newDate)
 }

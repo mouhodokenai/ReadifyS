@@ -53,7 +53,7 @@ fun BookList(navController: NavController, context: MainActivity) {
     viewModel.books.observe(context){
         books = it
     }
-    viewModel.show()
+    viewModel.showBooks()
     LazyColumn {
         items(books) { book ->
             BookItem(book, navController)

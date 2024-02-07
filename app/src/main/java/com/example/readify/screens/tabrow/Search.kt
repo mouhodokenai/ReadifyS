@@ -49,7 +49,7 @@ fun Search(navController: NavController, context: MainActivity) {
     viewModel.books.observe(context) {
         bookList = it
     }
-    viewModel.show()
+    viewModel.showBooks()
 
     val genres = listOf(
         "Драма",

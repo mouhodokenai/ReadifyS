@@ -17,6 +17,19 @@ data class Book(
 @Serializable
 data class BooksListWrapper(val books: List<Book>)
 
+@Serializable
+data class Loan(
+    val loanId: Int,
+    val userId: Int,
+    val bookTitle: String,
+    val loanDate: String,
+    val returnDate: String
+)
+
+@Serializable
+data class LoansListWrapper(val loans: List<Loan>)
+
+
 data class User(
     val id: Int,
     val name : String,
@@ -29,11 +42,4 @@ data class Favorites(
     val bookArticle : Int
 )
 
-data class Loans(
-    val id: Int,
-    val userId: Int,
-    val bookId : Int,
-    val loanDate : String,
-    val returnDate : String
-)
 

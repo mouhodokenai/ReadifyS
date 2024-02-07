@@ -55,8 +55,32 @@ class Client() {
         }
     }
 
+    suspend fun sendLoanRequest(text: String): List<Loan> {
+        val socket = connect()
+        socket.openWriteChannel(autoFlush = true).writeStringUtf8(text)
 
+        // Логирование перед получением ответа
+        Log.d("RequestLogging", "Sent request: $text")
 
+        val reader = socket.openReadChannel()
+        val answer = reader.readUTF8Line().toString()
+
+        // Логирование после получения ответа
+        Log.d("AnswerLogging", "Raw Server Response: $answer")
+
+        try {
+            // Попытка десериализации ответа с использованием kotlinx.serialization
+            val loansList = Json.decodeFromString<LoansListWrapper>(answer).loans
+            Log.d("AnswerLogging", "Parsed Answer: $loansList")
+
+            return loansList
+        } catch (e: Exception) {
+            // Обработка ошибок десериализации и логирование
+            e.printStackTrace()
+            Log.e("AnswerLogging", "Error parsing JSON response: $answer")
+            return emptyList<Loan>()
+        }
+    }
 
     suspend fun sendBookRequest(text: String): List<Book> {
         val socket = connect()
@@ -84,7 +108,4 @@ class Client() {
             return emptyList<Book>()
         }
     }
-
-
-
 }
