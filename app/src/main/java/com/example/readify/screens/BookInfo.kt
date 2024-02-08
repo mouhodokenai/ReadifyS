@@ -33,7 +33,7 @@ import com.example.readify.Client
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
 import com.example.readify.R
-import com.example.readify.RegisterVm
+import com.example.readify.Vm
 import com.example.readify.SharedPreferences
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,6 +42,7 @@ fun BookInfo(
     context: MainActivity,
     argumentValue : Int
 ) {
+    val viewModel = Vm(NetworkRepository(Client()))
     var book = remember {
         Book(
             1,
@@ -54,8 +55,6 @@ fun BookInfo(
             " "
         )
     }
-    val viewModel = RegisterVm(NetworkRepository(Client()))
-
     viewModel.selectedBook.observe(context) {
         book = it
     }

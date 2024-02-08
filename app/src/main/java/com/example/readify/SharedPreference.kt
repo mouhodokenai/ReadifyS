@@ -1,5 +1,6 @@
 package com.example.readify
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -26,4 +27,11 @@ object SharedPreferences {
         return sharedPreferences.contains(KEY_USERID)
     }
 
+    fun setData(keyword : String, data : String){
+        sharedPreferences.edit().putString(keyword, data).apply()
+    }
+
+    fun getData(keyword: String) : String?{
+        return sharedPreferences.getString(keyword, "user")
+    }
 }

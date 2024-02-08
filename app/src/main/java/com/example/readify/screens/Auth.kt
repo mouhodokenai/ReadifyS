@@ -30,19 +30,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.readify.Client
+import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
-import com.example.readify.RegisterVm
+import com.example.readify.Vm
 import com.example.readify.SharedPreferences
+import com.example.readify.User
 
 @Composable
-fun Auth(navController: NavController) {
+fun Auth(navController: NavController, context: MainActivity) {
     var email by remember {
         mutableStateOf("")
     }
+
     var password by remember {
         mutableStateOf("")
     }
 
+    var user = remember {
+        User(
+            0,
+            "user",
+            "yandex@yandex.ru",
+            "123456789"
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -92,15 +103,24 @@ fun Auth(navController: NavController) {
                 icon = { Icon(Icons.Filled.Check, contentDescription = "Log in") },
                 text = { Text("Войти") },
                 onClick = {
-                    /*TODO*/
-                    val viewModel = RegisterVm(NetworkRepository(Client()))
+                    val viewModel = Vm(NetworkRepository(Client()))
+
+                    viewModel.user.observe(context) {
+                        user = it
+                    }
+
                     viewModel.login(
                         email = email,
                         password = password
                     )
-                    SharedPreferences.setUserId(1) /*TODO*/
-                    navController.popBackStack()
-                    navController.navigate("home")
+                    if (user.email != "yandex@yandex.ru") {
+                        SharedPreferences.setUserId(user.id)
+                        SharedPreferences.setData("name", user.name)
+                        SharedPreferences.setData("email", user.email)
+
+                        navController.popBackStack()
+                        navController.navigate("home")
+                    }
                 }
             )
             ExtendedFloatingActionButton(

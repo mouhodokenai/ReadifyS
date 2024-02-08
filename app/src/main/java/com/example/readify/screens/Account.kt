@@ -40,7 +40,8 @@ import com.example.readify.Loan
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
 import com.example.readify.R
-import com.example.readify.RegisterVm
+import com.example.readify.Vm
+import com.example.readify.SharedPreferences
 import com.example.readify.User
 import com.example.readify.screens.tabrow.getGreeting
 import java.time.LocalDate
@@ -55,10 +56,10 @@ fun Account(navController: NavController, context: MainActivity) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.fillMaxHeight(0.05f))
-        Text(text = getGreeting() + user.name, fontSize = 15.sp) /*TODO*/
-        Text(text = "Ваша эл. почта: ${user.email}") /*TODO*/
+        Text(text = getGreeting() + SharedPreferences.getData("name"), fontSize = 15.sp) /*TODO*/
+        Text(text = "Ваша эл. почта: " + SharedPreferences.getData("email")) /*TODO*/
 
-        val viewModel = RegisterVm(NetworkRepository(Client()))
+        val viewModel = Vm(NetworkRepository(Client()))
 
         var books by remember {
             mutableStateOf(emptyList<Loan>())

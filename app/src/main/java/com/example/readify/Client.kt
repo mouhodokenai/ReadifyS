@@ -123,13 +123,39 @@ class Client() {
         try {
             // Попытка десериализации ответа с использованием kotlinx.serialization
             val book = Gson().fromJson(answer, Book::class.java)
-
+            Log.e("BookLogging", "Book: $book")
             return book
         } catch (e: Exception) {
             // Обработка ошибок десериализации и логирование
             e.printStackTrace()
             Log.e("AnswerLogging", "Error parsing JSON response: $answer")
             return Book(0, "", "", "", "", "", true, "")
+        }
+    }
+
+    suspend fun sendAUserRequest(text: String): User {
+        val socket = connect()
+        socket.openWriteChannel(autoFlush = true).writeStringUtf8(text)
+
+        // Логирование перед получением ответа
+        Log.d("RequestLogging", "Sent request: $text")
+
+        val reader = socket.openReadChannel()
+        val answer = reader.readUTF8Line().toString()
+
+        // Логирование после получения ответа
+        Log.d("AnswerLogging", "Raw Server Response: $answer")
+
+        try {
+            // Попытка десериализации ответа с использованием kotlinx.serialization
+            val user = Gson().fromJson(answer, User::class.java)
+            Log.e("UserLogging", "User: $user")
+            return user
+        } catch (e: Exception) {
+            // Обработка ошибок десериализации и логирование
+            e.printStackTrace()
+            Log.e("AnswerLogging", "Error parsing JSON response: $answer")
+            return User(0, "", "", "")
         }
     }
 }

@@ -41,11 +41,11 @@ import com.example.readify.Client
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
 import com.example.readify.R
-import com.example.readify.RegisterVm
+import com.example.readify.Vm
 
 @Composable
 fun BookList(navController: NavController, context: MainActivity) {
-    val viewModel = RegisterVm(NetworkRepository(Client()))
+    val viewModel = Vm(NetworkRepository(Client()))
 
     var books by remember {
         mutableStateOf(emptyList<Book>())

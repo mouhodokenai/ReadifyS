@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navController, this@MainActivity)
                         }
                         composable("login"){
-                            Auth(navController)
+                            Auth(navController, this@MainActivity)
                         }
                         composable("sign up"){
                             Register(navController, this@MainActivity)

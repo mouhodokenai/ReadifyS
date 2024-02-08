@@ -31,7 +31,7 @@ import androidx.navigation.NavController
 import com.example.readify.Client
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
-import com.example.readify.RegisterVm
+import com.example.readify.Vm
 
 @Composable
 fun Register(navController: NavController, context: MainActivity) {
@@ -115,7 +115,7 @@ fun Register(navController: NavController, context: MainActivity) {
             text = { Text("Зарегистрироваться") },
             onClick = {
                 if (regex.matches(email) && (password.length in 6..12)) {
-                    val viewModel = RegisterVm(NetworkRepository(Client()))
+                    val viewModel = Vm(NetworkRepository(Client()))
                     viewModel.register(
                         name = username,
                         email = email,

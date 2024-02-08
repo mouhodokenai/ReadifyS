@@ -29,7 +29,7 @@ data class Loan(
 @Serializable
 data class LoansListWrapper(val loans: List<Loan>)
 
-
+@Serializable
 data class User(
     val id: Int,
     val name : String,

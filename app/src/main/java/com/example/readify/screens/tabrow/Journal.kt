@@ -32,16 +32,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.readify.Book
 import com.example.readify.Client
+import com.example.readify.Loan
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
-import com.example.readify.RegisterVm
+import com.example.readify.Vm
 import com.example.readify.SharedPreferences
 import java.time.LocalTime
 
 @Composable
 fun Journal(navController: NavController, context: MainActivity) {
 
-    val viewModel = RegisterVm(NetworkRepository(Client()))
+    val viewModel = Vm(NetworkRepository(Client()))
 
     var books by remember {
         mutableStateOf(emptyList<Book>())
@@ -51,6 +52,13 @@ fun Journal(navController: NavController, context: MainActivity) {
     }
     viewModel.showBooks()
 
+    var loans by remember {
+        mutableStateOf(emptyList<Loan>())
+    }
+    viewModel.loans.observe(context){
+        loans = it
+    }
+    viewModel.showLoans()
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -64,15 +72,19 @@ fun Journal(navController: NavController, context: MainActivity) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(15.dp)
-                        .border(1.dp, MaterialTheme.colorScheme.secondary, shape = RoundedCornerShape(8.dp)),
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.secondary,
+                            shape = RoundedCornerShape(8.dp)
+                        ),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(
                         horizontalAlignment = Alignment.End
                     ) {
-                        Text(text = getGreeting() + "user", fontSize = 15.sp) /*TODO*/
-                        Text(text = "Количество взятых книг: n") /*TODO*/
+                        Text(text = getGreeting() + SharedPreferences.getData("name"), fontSize = 15.sp)
+                        Text(text = "Количество взятых книг: " + loans.size) /*TODO*/
                     }
                     IconButton(onClick = {
                         navController.navigate("account")

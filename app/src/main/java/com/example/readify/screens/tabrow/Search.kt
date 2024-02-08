@@ -32,7 +32,7 @@ import com.example.readify.Book
 import com.example.readify.Client
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
-import com.example.readify.RegisterVm
+import com.example.readify.Vm
 
 @Composable
 fun Search(navController: NavController, context: MainActivity) {
@@ -41,7 +41,7 @@ fun Search(navController: NavController, context: MainActivity) {
     var selectedGenre by remember { mutableStateOf("") }
 
 
-    val viewModel = RegisterVm(NetworkRepository(Client()))
+    val viewModel = Vm(NetworkRepository(Client()))
 
     var bookList by remember {
         mutableStateOf(emptyList<Book>())

@@ -1,18 +1,16 @@
 package com.example.readify
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 
-class RegisterVm(private val repository: NetworkRepository) : ViewModel() {
+class Vm(private val repository: NetworkRepository) : ViewModel() {
     val success = MutableLiveData<Boolean>()
     val books = MutableLiveData<List<Book>>()
     val loans = MutableLiveData<List<Loan>>()
     val selectedBook = MutableLiveData<Book>()
+    val user = MutableLiveData<User>()
 
     fun register(name: String, email: String, password: String) {
         viewModelScope.launch {
@@ -22,7 +20,7 @@ class RegisterVm(private val repository: NetworkRepository) : ViewModel() {
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            repository.login(email, password)
+            user.value = repository.login(email, password)
         }
     }
 
