@@ -32,7 +32,7 @@ import com.example.readify.screens.TabItem
 @Composable
 fun HomeScreen(navController: NavController, context: MainActivity) {
     val tabList = listOf(
-        TabItem("Меню", Icons.Outlined.Home, Icons.Filled.Home),
+        TabItem("Главная", Icons.Outlined.Home, Icons.Filled.Home),
         TabItem("Поиск", Icons.Outlined.Search, Icons.Filled.Search),
         TabItem("Журнал", Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle)
     )

@@ -45,6 +45,7 @@ import com.example.readify.SharedPreferences
 import com.example.readify.User
 import com.example.readify.screens.tabrow.getGreeting
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -64,27 +65,33 @@ fun Account(navController: NavController, context: MainActivity) {
         var books by remember {
             mutableStateOf(emptyList<Loan>())
         }
-        viewModel.loans.observe(context){
+        viewModel.loans.observe(context) {
             books = it
         }
-        viewModel.showLoans()
+        var id = SharedPreferences.getUserId()
+        viewModel.showLoans(id)
 
+        Text(text = "Список занятых книг: ")
         LazyColumn {
             items(books) { book ->
                 LoanItem(book)
             }
         }
 
-        Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = {
+            SharedPreferences.clearData()
+            navController.popBackStack()
+            navController.navigate("home")
+        }, modifier = Modifier.fillMaxWidth()) {
             Text(text = "Выйти из аккаунта")
         }
     }
 }
 
 @Composable
-fun LoanItem(book : Loan) {
+fun LoanItem(book: Loan) {
     val color = if (compareDate(book.returnDate)) {
-        Color.Black
+        MaterialTheme.colorScheme.secondary
     } else {
         Color.Gray
     }
@@ -117,7 +124,12 @@ fun LoanItem(book : Loan) {
                     .padding(horizontal = 16.dp)
             ) {
 
-                Text(text = book.bookTitle, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = color)
+                Text(
+                    text = book.bookTitle,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = color
+                )
                 Text(text = "Дата получения книги: ${book.loanDate}", color = color)
                 Text(text = "Дата возврата: ${book.returnDate}", color = color)
             }
@@ -132,15 +144,10 @@ fun getToday(): String {
 }
 
 fun compareDate(date: String): Boolean {
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val date1 = LocalDate.parse(date, formatter)
-    val date2 = LocalDate.parse(getToday(), formatter)
+    val date2 = LocalDate.now()
 
-    val comparisonResult = date1.compareTo(date2)
+    return date1.isAfter(date2)
 
-    return when {
-        comparisonResult < 0 -> false
-        comparisonResult > 0 -> true
-        else -> true
-    }
 }

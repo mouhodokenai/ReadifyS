@@ -1,6 +1,5 @@
 package com.example.readify
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -33,5 +32,10 @@ object SharedPreferences {
 
     fun getData(keyword: String) : String?{
         return sharedPreferences.getString(keyword, "user")
+    }
+
+    fun clearData() {
+        val editor = sharedPreferences.edit()
+        editor.clear().apply()
     }
 }

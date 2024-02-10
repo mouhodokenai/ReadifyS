@@ -32,6 +32,7 @@ import com.example.readify.Book
 import com.example.readify.Client
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
+import com.example.readify.SharedPreferences
 import com.example.readify.Vm
 
 @Composable
@@ -40,7 +41,7 @@ fun Search(navController: NavController, context: MainActivity) {
     var expanded by remember { mutableStateOf(false) }
     var selectedGenre by remember { mutableStateOf("") }
 
-
+    val userId = SharedPreferences.getUserId()
     val viewModel = Vm(NetworkRepository(Client()))
 
     var bookList by remember {
@@ -124,11 +125,13 @@ fun Search(navController: NavController, context: MainActivity) {
         }
         LazyColumn {
             items(bookList.filter {
-                (searchQuery != "" && it.title.lowercase()
-                    .contains(searchQuery.lowercase())) || it.genre == selectedGenre
+                (searchQuery != "" && (it.title.lowercase()
+                    .contains(searchQuery.lowercase()) || it.author.lowercase()
+                            .contains(searchQuery.lowercase())
+                    )) || it.genre == selectedGenre
             }
             ) { book ->
-                BookItem(book, navController)
+                BookItem(book, navController, context)
             }
         }
     }

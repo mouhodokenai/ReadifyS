@@ -1,7 +1,6 @@
 package com.example.readify
 
 import android.util.Log
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,12 +25,12 @@ class NetworkRepository(private val network: Client) {
         }
     }
 
-    suspend fun showLoans() : List<Loan>{ //
+    suspend fun showLoans(id: Int) : List<Loan> {
         return withContext(Dispatchers.IO) {
-            val request = Request("ShowLoans", mapOf("name" to "name"))
+            val request = Request("ShowLoans", mapOf("id" to id.toString()))
 
             val jsonRequest = Gson().toJson(request)
-            Log.d("книжка", "JSON Request: $jsonRequest")
+            Log.d("занятые", "JSON Request: $jsonRequest")
             return@withContext network.sendLoanRequest(jsonRequest)
         }
     }
@@ -39,6 +38,19 @@ class NetworkRepository(private val network: Client) {
     suspend fun show() : List<Book>{
         return withContext(Dispatchers.IO) {
             val request = Request("ShowBooks", mapOf("name" to "name"))
+
+            val jsonRequest = Gson().toJson(request)
+            Log.d("книжка", "JSON Request: $jsonRequest")
+            return@withContext network.sendBookRequest(jsonRequest)
+        }
+    }
+
+    suspend fun showFavs(id: String) : List<Book>{
+        return withContext(Dispatchers.IO) {
+            val request = Request("ShowFavs", mapOf(
+                "id" to id
+            )
+            )
 
             val jsonRequest = Gson().toJson(request)
             Log.d("книжка", "JSON Request: $jsonRequest")
@@ -83,6 +95,24 @@ class NetworkRepository(private val network: Client) {
             Log.d("RequestLogging", "JSON Request: $jsonRequest")
 
             return@withContext network.sendAUserRequest(jsonRequest);
+        }
+    }
+
+    suspend fun makeFav(article: String, id: String): Boolean{
+        return withContext(Dispatchers.IO){
+            val request = Request("MakeFav", mapOf(
+                "article" to article,
+                "id" to id
+            )
+            )
+
+            val jsonRequest = Gson().toJson(request)
+            Log.d("RequestLogging", "JSON Request: $jsonRequest")
+            val serverAnswer = network.sendRequest(jsonRequest)
+            val result = serverAnswer?.mapAttributes?.get("answer")
+            Log.d("AnswerLogging", "Результат $serverAnswer")
+            println(result)
+            return@withContext result == "1"
         }
     }
 }

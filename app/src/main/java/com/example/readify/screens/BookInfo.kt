@@ -1,7 +1,9 @@
 package com.example.readify.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -20,7 +24,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -28,6 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.readify.Book
 import com.example.readify.Client
 import com.example.readify.MainActivity
@@ -35,16 +46,23 @@ import com.example.readify.NetworkRepository
 import com.example.readify.R
 import com.example.readify.Vm
 import com.example.readify.SharedPreferences
+import com.example.readify.screens.tabrow.addFavorites
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookInfo(
+    navController: NavController,
     context: MainActivity,
-    argumentValue : Int
+    argumentValue: Int
 ) {
-    val viewModel = Vm(NetworkRepository(Client()))
-    var book = remember {
-        Book(
+
+    var isFavorite by remember {
+        mutableStateOf(false)
+    }
+    val userId = SharedPreferences.getUserId()
+    val viewModel = remember { Vm(NetworkRepository(Client())) }
+    val bookState by viewModel.selectedBook.observeAsState(
+        initial = Book(
             1,
             " ",
             " ",
@@ -54,12 +72,13 @@ fun BookInfo(
             true,
             " "
         )
-    }
-    viewModel.selectedBook.observe(context) {
-        book = it
-    }
+    )
 
-    viewModel.book(argumentValue.toString())
+    val scroll = rememberScrollState()
+
+    LaunchedEffect(argumentValue) {
+        viewModel.book(argumentValue.toString())
+    }
 
     Scaffold(
         topBar = {
@@ -71,7 +90,8 @@ fun BookInfo(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = null,
                             modifier = Modifier.clickable {
-                                /*TODO RETURN TO MAIN*/
+                                navController.popBackStack()
+                                navController.navigate("home")
                             }
                         )
                     }
@@ -82,7 +102,8 @@ fun BookInfo(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .verticalScroll(scroll),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -101,27 +122,43 @@ fun BookInfo(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.Start
             ) {
-                InfoText("Название", book.title)
-                InfoText("Автор", book.author)
-                InfoText("Жанр", book.genre)
-                InfoText("Издание", book.publication)
-                InfoText("Дата выпуска", book.realiseDate)
-                InfoText("Артикул", book.article.toString())
-                Text(text = "Краткое описание: ", color = MaterialTheme.colorScheme.secondary, fontSize = 20.sp)
-                Text(text = book.description, fontSize = 20.sp)
+                InfoText("Название", bookState.title)
+                InfoText("Автор", bookState.author)
+                InfoText("Жанр", bookState.genre)
+                InfoText("Издание", bookState.publication)
+                InfoText("Дата выпуска", bookState.realiseDate)
+                InfoText("Артикул", bookState.article.toString())
+                Text(
+                    text = "Краткое описание: ",
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 20.sp
+                )
+                Text(text = bookState.description, fontSize = 20.sp)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
-                ){
+                ) {
                     Button(onClick = {
-                        viewModel.loan(
-                            article = book.article,
-                            id = SharedPreferences.getUserId(),
-                        )
+                        if (bookState.isAvailable) {
+                            bookState.isAvailable = false
+                            viewModel.loan(
+                                article = bookState.article,
+                                id = SharedPreferences.getUserId()
+                            )
+                        } else {
+                            Toast.makeText(context, "Книга занята", Toast.LENGTH_SHORT).show()
+                        }
                     }) {
                         Text(text = "Забрать")
                     }
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = {
+                        if (SharedPreferences.containsKey() && !isFavorite) {
+                            isFavorite = true
+                            addFavorites( bookState.article, SharedPreferences.getUserId())
+                        } else {
+                            Toast.makeText(context, "Книга уже в избранных", Toast.LENGTH_SHORT).show()
+                        }
+                    }) {
                         Text(text = "В избранное")
                     }
                 }
@@ -129,6 +166,7 @@ fun BookInfo(
         }
     }
 }
+
 
 @Composable
 fun InfoText(text: String, value: String) {

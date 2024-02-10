@@ -43,6 +43,7 @@ import java.time.LocalTime
 fun Journal(navController: NavController, context: MainActivity) {
 
     val viewModel = Vm(NetworkRepository(Client()))
+    val id = SharedPreferences.getUserId()
 
     var books by remember {
         mutableStateOf(emptyList<Book>())
@@ -52,13 +53,13 @@ fun Journal(navController: NavController, context: MainActivity) {
     }
     viewModel.showBooks()
 
-    var loans by remember {
-        mutableStateOf(emptyList<Loan>())
+    var favs by remember {
+        mutableStateOf(emptyList<Book>())
     }
-    viewModel.loans.observe(context){
-        loans = it
+    viewModel.books.observe(context){
+        favs = it
     }
-    viewModel.showLoans()
+    viewModel.showFavs(id.toString())
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -84,7 +85,6 @@ fun Journal(navController: NavController, context: MainActivity) {
                         horizontalAlignment = Alignment.End
                     ) {
                         Text(text = getGreeting() + SharedPreferences.getData("name"), fontSize = 15.sp)
-                        Text(text = "Количество взятых книг: " + loans.size) /*TODO*/
                     }
                     IconButton(onClick = {
                         navController.navigate("account")
@@ -95,7 +95,7 @@ fun Journal(navController: NavController, context: MainActivity) {
                 /*TODO FAVORITES*/
                 LazyColumn {
                     items(books) { book ->
-                        BookItem(book, navController)
+                        BookItem(book, navController, context)
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.example.readify.screens.tabrow
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +18,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,12 +38,14 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.readify.Book
 import com.example.readify.Client
 import com.example.readify.MainActivity
 import com.example.readify.NetworkRepository
 import com.example.readify.R
+import com.example.readify.SharedPreferences
 import com.example.readify.Vm
 
 @Composable
@@ -56,7 +61,7 @@ fun BookList(navController: NavController, context: MainActivity) {
     viewModel.showBooks()
     LazyColumn {
         items(books) { book ->
-            BookItem(book, navController)
+            BookItem(book, navController, context)
         }
     }
 }
@@ -64,7 +69,10 @@ fun BookList(navController: NavController, context: MainActivity) {
 
 
 @Composable
-fun BookItem(book: Book, navController: NavController) {
+fun BookItem(book: Book, navController: NavController, context: MainActivity) {
+    var isFavorite by remember {
+        mutableStateOf(false)
+    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -101,16 +109,31 @@ fun BookItem(book: Book, navController: NavController) {
                     color = if (book.isAvailable) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
             }
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                if (SharedPreferences.containsKey() && !isFavorite) {
+                    isFavorite = true
+                    addFavorites( book.article, SharedPreferences.getUserId())
+                } else {
+                    Toast.makeText(context, "Книга уже в избранных", Toast.LENGTH_SHORT).show()
+                }
+            }) {
                 Icon(
                     imageVector =
-                    //if (book.isFavorite){
-                        Icons.Outlined.FavoriteBorder,
-                    //Icons.Filled.Favorite,
+                    if (isFavorite) {
+                        Icons.Outlined.Favorite
+                    } else {
+                        Icons.Outlined.FavoriteBorder
+                    },
                     contentDescription = null
-                ) /*TODO FAVORITES*/
+                )
             }
             Spacer(modifier = Modifier.width(7.dp))
         }
     }
+}
+
+
+fun addFavorites(article: Int, id :Int){
+    val viewModel = Vm(NetworkRepository(Client()))
+    viewModel.makeFavs(article.toString(), id.toString())
 }

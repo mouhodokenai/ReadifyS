@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(navArgument("article") { type = NavType.IntType })
                         ){backStackEntry ->
                             val argumentValue = backStackEntry.arguments?.getInt("article") ?: 1
-                            BookInfo(
+                            BookInfo(navController,
                                 this@MainActivity,
                                 argumentValue
                             )

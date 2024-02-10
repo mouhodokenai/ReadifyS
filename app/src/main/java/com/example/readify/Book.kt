@@ -10,7 +10,7 @@ data class Book(
     val publication: String,
     val author: String,
     val genre: String,
-    val isAvailable: Boolean,
+    var isAvailable: Boolean,
     val description: String
 )
 
